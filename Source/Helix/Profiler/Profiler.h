@@ -120,6 +120,14 @@ namespace helix::profiler
     };
 
     bool LoadCapture(StringView path, Capture& out);
+
+    // Clock of the captured events, for converting other timelines such as GPU timestamps.
+    u64 CaptureTicks();
+    u64 CaptureTicksPerSecond();
+
+    // Adds an event to a timeline that is not a CPU thread (a GPU queue for example), shown as its own track.
+    // Events of one track must arrive in time order; the stored track id is 1 << 63 | track.
+    void RecordTrackEvent(u32 track, const char* trackName, Marker& marker, u64 ticks, EventKind kind);
 }
 
 #define HX_PROFILE_JOIN2(a, b) a##b

@@ -411,6 +411,36 @@ namespace helix::profiler
         return r.ok;
     }
 
+    u64 CaptureTicks() { return FastTicks(); }
+    u64 CaptureTicksPerSecond() { return TicksPerSecond(); }
+
+    void RecordTrackEvent(u32 track, const char* trackName, Marker& marker, u64 ticks, EventKind kind)
+    {
+        if (!IsCapturing())
+            return;
+        u32 id = marker.Id();
+        u64 trackId = (1ull << 63) | track;
+        ThreadBuffer* buffer = nullptr;
+        {
+            platform::ScopedLock lock(R().mutex);
+            for (ThreadBuffer* t : R().threads)
+                if (t->id == trackId)
+                    buffer = t;
+            if (!buffer)
+            {
+                buffer = New<ThreadBuffer>(HeapAllocator());
+                buffer->id = trackId;
+                buffer->name = trackName;
+                buffer->head = buffer->tail = New<EventChunk>(HeapAllocator());
+                buffer->generation.store(generation.load(std::memory_order_relaxed), std::memory_order_relaxed);
+                R().threads.Push(buffer);
+            }
+        }
+        buffer->lock.Lock();
+        Append(*buffer, {ticks, id, kind});
+        buffer->lock.Unlock();
+    }
+
     const CaptureMarker* Capture::FindMarker(StringView name) const
     {
         for (const CaptureMarker& m : markers)

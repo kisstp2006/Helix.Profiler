@@ -30,6 +30,12 @@ helix::profiler::SaveChromeTrace("frame.json");
 - `LoadCapture` reads `.hxprof` files back into a `Capture` (markers, counters, threads, events, samples, frames).
 - Chrome traces open in any viewer that reads the trace event JSON format.
 
+## External tracks
+
+`RecordTrackEvent(track, name, marker, ticks, kind)` adds events of a timeline that is not a CPU thread,
+such as GPU timestamps converted with `CaptureTicks` and `CaptureTicksPerSecond`. Each track is saved
+like a thread with the id `1 << 63 | track`.
+
 ## File format
 
 `HXPROF01` magic, ticks per second, marker table (id, name, file, line), counter table,

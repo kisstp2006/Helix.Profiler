@@ -128,3 +128,29 @@ HX_TEST(Profiler, RejectsBadFiles)
     platform::RemoveFile(path);
     HX_CHECK(!profiler::LoadCapture("helix_missing_capture.hxprof", capture));
 }
+
+HX_TEST(Profiler, ExternalTrackEvents)
+{
+    static profiler::Marker pass{"GpuPass"};
+    profiler::RecordTrackEvent(0, "GPU", pass, 1, profiler::EventKind::Begin);
+    profiler::BeginCapture();
+    u64 t0 = profiler::CaptureTicks();
+    u64 step = profiler::CaptureTicksPerSecond() / 1000;
+    profiler::RecordTrackEvent(0, "GPU", pass, t0, profiler::EventKind::Begin);
+    profiler::RecordTrackEvent(0, "GPU", pass, t0 + step, profiler::EventKind::End);
+    profiler::EndCapture();
+    String path = TempFile(".hxprof");
+    HX_REQUIRE(profiler::SaveCapture(path));
+    profiler::Capture capture;
+    HX_REQUIRE(profiler::LoadCapture(path, capture));
+    const profiler::CaptureThread* gpu = nullptr;
+    for (const auto& t : capture.threads)
+        if (t.id == ((1ull << 63) | 0))
+            gpu = &t;
+    HX_REQUIRE(gpu != nullptr);
+    HX_CHECK(gpu->name == "GPU");
+    HX_REQUIRE(gpu->events.Size() == 2u);
+    HX_CHECK_EQ(gpu->events[1].ticks - gpu->events[0].ticks, step);
+    HX_CHECK_EQ(gpu->events[0].marker, capture.FindMarker("GpuPass")->id);
+    platform::RemoveFile(path);
+}
