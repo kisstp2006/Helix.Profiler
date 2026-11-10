@@ -1,8 +1,8 @@
-#include <helix/profiler/profiler.h>
-#include <helix/core/strings/format.h>
-#include <helix/platform/file_system.h>
-#include <helix/platform/thread.h>
-#include <helix/platform/time.h>
+#include <Helix/Profiler/Profiler.h>
+#include <Helix/Core/Strings/Format.h>
+#include <Helix/Platform/IO/FileSystem.h>
+#include <Helix/Platform/Threading/Thread.h>
+#include <Helix/Platform/Time/Time.h>
 
 #include <cstring>
 

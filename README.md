@@ -6,7 +6,7 @@ into lock-free per-thread buffers and saved as a binary capture or as a Chrome t
 ## Usage
 
 ```cpp
-#include <helix/profiler/profiler.h>
+#include <Helix/Profiler/Profiler.h>
 
 helix::profiler::Counter drawCalls{"render.drawCalls"};
 

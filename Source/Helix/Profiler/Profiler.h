@@ -1,7 +1,7 @@
 #pragma once
 
-#include <helix/core/containers/array.h>
-#include <helix/core/strings/string.h>
+#include <Helix/Core/Containers/Array.h>
+#include <Helix/Core/Strings/String.h>
 
 #include <atomic>
 

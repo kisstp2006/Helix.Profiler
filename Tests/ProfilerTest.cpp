@@ -1,9 +1,9 @@
-#include <helix/profiler/profiler.h>
-#include <helix/core/guid/guid.h>
-#include <helix/core/strings/format.h>
-#include <helix/platform/file_system.h>
-#include <helix/platform/thread.h>
-#include <helix/testing/test.h>
+#include <Helix/Profiler/Profiler.h>
+#include <Helix/Core/Types/Guid.h>
+#include <Helix/Core/Strings/Format.h>
+#include <Helix/Platform/IO/FileSystem.h>
+#include <Helix/Platform/Threading/Thread.h>
+#include <Helix/Testing/Test.h>
 
 using namespace helix;
 

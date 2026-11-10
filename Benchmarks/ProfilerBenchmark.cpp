@@ -1,5 +1,5 @@
-#include <helix/profiler/profiler.h>
-#include <helix/testing/bench.h>
+#include <Helix/Profiler/Profiler.h>
+#include <Helix/Testing/Bench.h>
 
 using namespace helix;
 
