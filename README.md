@@ -44,7 +44,8 @@ threads (id, name, events, counter samples), frame timestamps. All values little
 ## Build
 
 ```
-git clone --recursive https://github.com/kisstp2006/Helix.Profiler
+git clone https://github.com/kisstp2006/Helix.Profiler
+git -C Helix.Profiler submodule update --init
 cmake --preset windows-release
 cmake --build --preset windows-release
 ctest --preset windows-release
