@@ -38,7 +38,7 @@ namespace helix::profiler
 
     namespace detail
     {
-        extern std::atomic<bool> capturing;
+        extern HX_IMPORT_DATA std::atomic<bool> capturing;
         void Begin(Marker& marker);
         void End(Marker& marker);
     }
